@@ -25,7 +25,6 @@ project "06. Ray generation"
    files {"src/ray_generation.h", "src/ray_generation.cpp" }
    files {"src/ray_generation_main.cpp"}
 
---[[
 project "07. Moller-Trumbore algorithm"
    kind "ConsoleApp"
    includedirs { "lib/stb" }
@@ -71,4 +70,3 @@ project "10. Anti-aliasing"
    files {"src/acceleration_structures.h", "src/acceleration_structures.cpp"}
    files {"src/anti_aliasing.h", "src/anti_aliasing.cpp"}
    files {"src/anti_aliasing_main.cpp"}
-]]--

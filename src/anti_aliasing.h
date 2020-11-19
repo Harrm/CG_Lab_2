@@ -2,10 +2,10 @@
 
 #include "acceleration_structures.h"
 
-class AntiAliasing : public AccelerationStructures
+class AntiAliasing : public LightingAndShadows
 {
 public:
 	AntiAliasing(short width, short height);
-	virtual ~AntiAliasing();
+	virtual ~AntiAliasing() = default;
 	virtual void DrawScene();
 };

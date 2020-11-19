@@ -5,9 +5,13 @@
 class MaterialTriangle : public Triangle
 {
 public:
-	MaterialTriangle(Vertex a, Vertex b, Vertex c) : Triangle(a, b, c) { geo_normal = normalize(cross(ba, ca)); };
-	MaterialTriangle() { };
-	virtual ~MaterialTriangle() {};
+	MaterialTriangle(Vertex a, Vertex b, Vertex c) : Triangle(a, b, c) { 
+		geo_normal = normalize(cross(ba, ca));
+		specular_exponent = 1.f;
+		ior = 1.f;
+	};
+	MaterialTriangle() = delete;
+	virtual ~MaterialTriangle() = default;
 
 	void SetEmisive(float3 emissive) { emissive_color = emissive; };
 	void SetAmbient(float3 ambient) { ambient_color = ambient; };
@@ -36,7 +40,7 @@ class Light
 {
 public:
 	Light(float3 position, float3 color) : position(position), color(color) {};
-	virtual ~Light() {};
+	virtual ~Light() = default;
 
 	float3 position;
 	float3 color;
@@ -46,16 +50,16 @@ class LightingAndShadows : public MTAlgorithm
 {
 public:
 	LightingAndShadows(short width, short height);
-	virtual ~LightingAndShadows();
+	virtual ~LightingAndShadows() = default;
 
 	virtual int LoadGeometry(std::string filename);
 
-	virtual void AddLight(Light* light);
+	virtual void AddLight(const Light& light);
 protected:
-	virtual Payload TraceRay(const Ray& ray, const unsigned int max_raytrace_depth) const;
+	Payload TraceRay(const Ray& ray, const unsigned int max_raytrace_depth) const override;
 	virtual float TraceShadowRay(const Ray& ray, const float max_t) const;
-	virtual Payload Hit(const Ray& ray, const IntersectableData& data, const MaterialTriangle* traingle, const unsigned int max_raytrace_depth) const;
+	virtual Payload Hit(const Ray& ray, const IntersectableData& data, const MaterialTriangle& traingle, const unsigned int max_raytrace_depth) const;
 
-	std::vector<MaterialTriangle*> material_objects;
-	std::vector<Light*> lights;
+	std::vector<std::unique_ptr<MaterialTriangle>> material_objects;
+	std::vector<std::unique_ptr<Light>> lights;
 };

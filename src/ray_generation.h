@@ -10,22 +10,14 @@ using namespace linalg::ostream_overloads;
 
 #include <iostream>
 
-class Ray
+struct Ray 
 {
-public:
-	Ray(float3 position, float3 direction) : position(position) {
-		this->direction = normalize(direction);
-	};
-	~Ray() {};
 	float3 position;
 	float3 direction;
 };
 
-class Payload
+struct Payload 
 {
-public:
-	Payload() { color = float3{ 0, 0, 0 };};
-	~Payload() {};
 	float3 color;
 };
 
@@ -34,15 +26,13 @@ class Camera
 {
 public:
 	Camera();
-	~Camera();
 
 	void SetPosition(float3 position);
-	void SetDirection(float3 direction);
+	void LookAt(float3 direction);
 	void SetUp(float3 approx_up);
-	void SetRenderTargetSize(short width, short height);
+	void SetRenderTargetSize(uint32_t width, uint32_t height);
 
-	Ray GetCameraRay(short x, short y) const;
-	Ray GetCameraRay(short x, short y, float3 jitter) const;
+	Ray GetCameraRay(uint32_t x, uint32_t y, float3 jitter = { 0, 0, 0 }) const;
 
 private:
 	float3 position;
@@ -50,8 +40,8 @@ private:
 	float3 up;
 	float3 right;
 
-	short width;
-	short height;
+	uint32_t width;
+	uint32_t height;
 };
 
 
@@ -59,8 +49,8 @@ private:
 class RayGenerationApp
 {
 public:
-	RayGenerationApp(short width, short height);
-	virtual ~RayGenerationApp();
+	RayGenerationApp(uint32_t width, uint32_t height);
+	virtual ~RayGenerationApp() = default;
 
 	void SetCamera(float3 position, float3 direction, float3 approx_up);
 	void Clear();
@@ -69,15 +59,15 @@ public:
 	// Public method to compare the final image with a reference
 	std::vector<byte3> GetFrameBuffer() const { return frame_buffer; }
 protected:
-	void SetPixel(const unsigned short x, const unsigned short y, const float3 color);
-	virtual Payload TraceRay(const Ray& ray, const unsigned int max_raytrace_depth) const;
+	void SetPixel(const uint32_t x, const uint32_t y, const float3 color);
+	virtual Payload TraceRay(const Ray& ray, const uint32_t max_raytrace_depth) const;
 
 	virtual Payload Miss(const Ray& ray) const;
 
-	short width;
-	short height;
+	uint32_t width;
+	uint32_t height;
 
-	unsigned int raytracing_depth = 10;
+	uint32_t raytracing_depth = 10;
 
 	std::vector<byte3> frame_buffer;
 	Camera camera;

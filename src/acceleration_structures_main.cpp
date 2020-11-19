@@ -8,9 +8,8 @@ int main(int argc, char* argv[])
 	{
 		return result;
 	}
-	render->BuildBVH();
-	render->SetCamera(float3{ 0.0f, 0.795f, 1.6f }, float3{ 0, 0.795f, -1 }, float3{ 0, 1, 0 });
-	render->AddLight(new Light(float3{ 0, 1.58f, -0.03f }, float3{ 0.78f, 0.78f, 0.78f }));
+	render->SetCamera(float3{ 0, 1.1f, 5 }, float3{ 0, 1, -1 }, float3{ 0, 1, 0 });
+	render->AddLight(Light(float3{ 0, 1.9f, 0.16f }, float3{ 0.58f, 0.58f, 0.58f }));
 	render->Clear();
 	render->DrawScene();
 	result = render->Save("results/aabb.png");
